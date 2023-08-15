@@ -14,21 +14,29 @@ struct ContentView: View {
     @State private var coffeeCups = 1
     
     var body: some View {
-        VStack {
-            Text("When do you want to wake up?")
-                .font(.headline)
-            
-            DatePicker("Please enter a tine", selection: $wakeUp, displayedComponents: .hourAndMinute)
-                .labelsHidden()
-            
-            Text("Desired amount to sleep")
-                .font(.headline)
-            Stepper("\(sleepAmount.formatted()) hours", value: $sleepAmount, in: 4...12, step: 0.25)
-            
-            Text("Daily coffee intake")
-                .font(.headline)
-            
-            Stepper(coffeeCups == 1 ? "1 cup" : "\(coffeeCups) cups", value: $coffeeCups, in: 1...20)
+        NavigationStack {
+            VStack {
+                Text("When do you want to wake up?")
+                    .font(.headline)
+                
+                DatePicker("Please enter a tine", selection: $wakeUp, displayedComponents: .hourAndMinute)
+                    .labelsHidden()
+                
+                Text("Desired amount to sleep")
+                    .font(.headline)
+                Stepper("\(sleepAmount.formatted()) hours", value: $sleepAmount, in: 4...12, step: 0.25)
+                
+                Text("Daily coffee intake")
+                    .font(.headline)
+                
+                Stepper(coffeeCups == 1 ? "1 cup" : "\(coffeeCups) cups", value: $coffeeCups, in: 1...20)
+            }
+            .navigationTitle("BetterRest")
+            .toolbar {
+                Button("Calculate") {
+                    calculateBedtime()
+                }
+            }
         }
     }
     
