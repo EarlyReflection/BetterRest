@@ -10,7 +10,7 @@ import SwiftUI
 
 struct ContentView: View {
     
-    @State private var wakeUp = Date.now
+    @State private var wakeUp = defaultWakeTime
     @State private var sleepAmount = 8.0
     @State private var coffeeCups = 1
     
@@ -18,23 +18,34 @@ struct ContentView: View {
     @State private var alertMessage = ""
     @State private var showAlert = false
     
+    static var defaultWakeTime: Date {
+        var components = DateComponents()
+        components.hour = 8
+        components.minute = 30
+        return Calendar.current.date(from: components) ?? Date.now
+    }
+    
     var body: some View {
         NavigationStack {
-            VStack {
-                Text("When do you want to wake up?")
-                    .font(.headline)
+            Form {
+                VStack(alignment: .leading, spacing: 0) {
+                    Text("When do you want to wake up?")
+                        .font(.headline)
+                    DatePicker("Please enter a tine", selection: $wakeUp, displayedComponents: .hourAndMinute)
+                        .labelsHidden()
+                }
                 
-                DatePicker("Please enter a tine", selection: $wakeUp, displayedComponents: .hourAndMinute)
-                    .labelsHidden()
+                VStack(alignment: .leading, spacing: 0) {
+                    Text("Desired amount to sleep")
+                        .font(.headline)
+                    Stepper("\(sleepAmount.formatted()) hours", value: $sleepAmount, in: 4...12, step: 0.25)
+                }
                 
-                Text("Desired amount to sleep")
-                    .font(.headline)
-                Stepper("\(sleepAmount.formatted()) hours", value: $sleepAmount, in: 4...12, step: 0.25)
-                
-                Text("Daily coffee intake")
-                    .font(.headline)
-                
-                Stepper(coffeeCups == 1 ? "1 cup" : "\(coffeeCups) cups", value: $coffeeCups, in: 1...20)
+                VStack(alignment: .leading, spacing: 0) {
+                    Text("Daily coffee intake")
+                        .font(.headline)
+                    Stepper(coffeeCups == 1 ? "1 cup" : "\(coffeeCups) cups", value: $coffeeCups, in: 1...20)
+                }
             }
             .alert(alertTitle, isPresented: $showAlert) {
                 Button("OK") {}
