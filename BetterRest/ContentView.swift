@@ -54,14 +54,12 @@ struct ContentView: View {
                     Text("Desired amount to sleep")
                 }
                 
-                Section {
-                    Picker("cups", selection: $coffeeCups) {
+                Section ("Daily coffee intake") {
+                    Picker("Number of cups", selection: $coffeeCups) {
                         ForEach(1..<21) {
-                          Text(String($0))  
+                            Text(String($0))
                         }
                     }
-                } header: {
-                    Text("Daily coffee intake")
                 }
                 
                 Section {
